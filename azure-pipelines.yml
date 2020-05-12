@@ -1,5 +1,4 @@
-trigger:
-- 'master'
+
 
 pool:
   vmImage: vs2017-win2016
@@ -15,22 +14,21 @@ steps:
     CleanTargetFolder: true
     preserveTimestamp: true
 
+- script: |
+   type $(Build.ArtifactStagingDirectory)\*.sql > $(Build.ArtifactStagingDirectory)\Dummy.sql
+  displayName: Merge SQL Scripts into Single Script 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: SQL'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: SQL
 
-- script: 'echo $(Build.ArtifactStagingDirectory)'
-
-- script: 'ls $(Build.ArtifactStagingDirectory)'
-
 - task: SqlAzureDacpacDeployment@1
   displayName: 'Azure SQL SqlTask'
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription (13d31264-17e6-4ba7-9ee8-6fdc87d6a4ee)'
     AuthenticationType: connectionString
-    ConnectionString: '$(connectionString)'
+    ConnectionString: '$(ConnectionString)'
     deployType: SqlTask
-    SqlFile: '$(Build.ArtifactStagingDirectory)/master.sql'
+    SqlFile: '$(Build.ArtifactStagingDirectory)/Dummy.sql'
 

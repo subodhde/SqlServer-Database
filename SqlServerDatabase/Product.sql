@@ -7,3 +7,4 @@ CREATE TABLE [dbo].[Product2]
     [Size] VARCHAR(50) NOT NULL,
     CATEGORY VARCHAR(100)
 )
+GO
